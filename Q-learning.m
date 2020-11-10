@@ -1,22 +1,22 @@
-    H=[155,160,165];        %ĞÅµÀÔëÉù
-    S=zeros(1,903);        %×´Ì¬
-    ACTION=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];   %¶¯×÷¼¯
+    H=[155,160,165];        %ä¿¡é“å™ªå£°
+    S=zeros(1,903);        %çŠ¶æ€
+    ACTION=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];   %åŠ¨ä½œé›†
     gamma=0.95;
-    Ts=1;   %Ã¿¸öÊ±ÆÚµÄ´«ÊäÊ±³¤
-    symbol=0;   %´«ÊäµÄÂëÔªÊı
+    Ts=1;   %æ¯ä¸ªæ—¶æœŸçš„ä¼ è¾“æ—¶é•¿
+    symbol=0;   %ä¼ è¾“çš„ç å…ƒæ•°
     allsymbol=0; 
-    epsilon=0.1;      %Ì½Ë÷ÂÊ
+    epsilon=0.1;      %æ¢ç´¢ç‡
     alpha=0.1;
     eta=0.2;
-    q_value=zeros(903,15);   %³õÊ¼»¯Q±í
+    q_value=zeros(903,15);   %åˆå§‹åŒ–Qè¡¨
     q1_value=zeros(903,15);
  for i=1:50000
-    E=600;   %·¢Éä»ú×ÜÄÜÁ¿
-    E1=600;  %·¢Éä»úËùÊ£×ÜÄÜÁ¿
-    b=randperm(40);  %³õÊ¼»¯ÆğÊ¼×´Ì¬
-    c=b(1);  %È¡bµÄµÚÒ»¸ö
+    E=600;   %å‘å°„æœºæ€»èƒ½é‡
+    E1=600;  %å‘å°„æœºæ‰€å‰©æ€»èƒ½é‡
+    b=randperm(40);  %åˆå§‹åŒ–èµ·å§‹çŠ¶æ€
+    c=b(1);  %å–bçš„ç¬¬ä¸€ä¸ª
     if c<=2
-        h=155;  %ĞÅµÀÔëÉù
+        h=155;  %ä¿¡é“å™ªå£°
     elseif c>=3 && c<=21
         h=160;
     else
@@ -31,7 +31,7 @@
             state=903;   %903-603
     end
     while E1>0
-       if binornd(1,epsilon)==1     %epsilon-Ì°À··¨Ñ¡Ôñ¶¯×÷
+       if binornd(1,epsilon)==1     %epsilon-è´ªå©ªæ³•é€‰æ‹©åŠ¨ä½œ
            b=ACTION(randperm(length(ACTION)));
            action=b(1); 
        else
@@ -39,7 +39,7 @@
            [~,n]=max(b);
            action=n;
        end
-       switch action  %²»Í¬µ÷ÖÆ¶ÔÓ¦µÄ¹¦ÂÊ
+       switch action  %ä¸åŒè°ƒåˆ¶å¯¹åº”çš„åŠŸç‡
            case {1,6,11}  % 1 2345 6 78910 11 12131415
                P=2;
            case {2,7,12}  %1 2 345 6 7 8910 11 12 131415
@@ -48,11 +48,11 @@
                P=6;
            case {4,9,14}
                P=8;
-           case {5,10,15}  %15=3ÖÖµ÷ÖÆx5ÖÖÄÜÁ¿
+           case {5,10,15}  %15=3ç§è°ƒåˆ¶x5ç§èƒ½é‡
                P=10;
        end
         if (P*Ts>E1)
-            switch E1       %ÔÚ¿ÉÑ¡µÄ¶¯×÷ÖĞÊ¹ÓÃepsilon-Ì°À··¨Ñ¡Ôñ¶¯×÷
+            switch E1       %åœ¨å¯é€‰çš„åŠ¨ä½œä¸­ä½¿ç”¨epsilon-è´ªå©ªæ³•é€‰æ‹©åŠ¨ä½œ
                 case 8
                     ACTION=[1 2 3 4 5 6 7 8 9 10 11 12];
                     if binornd(1,epsilon)==1     
@@ -169,12 +169,12 @@
            end
         end
 
-       SL=171+10*log10(P)+10*log10(eta);  %165µ½175Ö®¼ä
+       SL=171+10*log10(P)+10*log10(eta);  %165åˆ°175ä¹‹é—´
        snr=SL-h;
       switch action
           case {1,2,3,4,5}
-              BER=0.5*erfc(sqrt(snr));   %ÎóÂëÂÊ
-              M=2;   %µ÷ÖÆ½×Êı
+              BER=0.5*erfc(sqrt(snr));   %è¯¯ç ç‡
+              M=2;   %è°ƒåˆ¶é˜¶æ•°
           case {6,7,8,9,10}
               BER=erfc(sqrt(4*snr)*sin(pi/8));
               M=4;
@@ -189,7 +189,7 @@
       allsymbol=allsymbol+M;
       E1=E1-P*Ts;
 
-     c=randperm(40);    %Éú³ÉĞÂµÄĞÅµÀ
+     c=randperm(40);    %ç”Ÿæˆæ–°çš„ä¿¡é“
      d=c(1);
      if d<=2
         next_h=155;
@@ -198,7 +198,7 @@
      else
         next_h=165;
      end
-      switch next_h         %¸üĞÂĞÅµÀ×´Ì¬ºÍËùÊ£ÄÜÁ¿
+      switch next_h         %æ›´æ–°ä¿¡é“çŠ¶æ€å’Œæ‰€å‰©èƒ½é‡
         case 155
                 next_state=E1/2+1;   %598/2+302=300
         case 160
@@ -206,7 +206,7 @@
         case 165
                 next_state=E1/2+603;   %598/2+603=902
       end
-      if E1>8           %ÔÚ¿ÉÑ¡µÄ¶¯×÷ÄÚÓÃÌ°À··¨Ñ¡Ôñ×î´ó¼ÛÖµµÄ¶¯×÷
+      if E1>8           %åœ¨å¯é€‰çš„åŠ¨ä½œå†…ç”¨è´ªå©ªæ³•é€‰æ‹©æœ€å¤§ä»·å€¼çš„åŠ¨ä½œ
          d=q_value(next_state,:);
          [~,n]=max(d);
          max_action=n;
@@ -276,8 +276,8 @@
     end
  end
   wumalv=1-symbol/allsymbol;
-  Xa = sprintf('ĞŞ¸Äºó:\n·¢ËÍÂëÔª%d£¬·¢ËÍ³É¹¦ÂëÔª%d',allsymbol,symbol);
-  Xb = sprintf('ÎóÂëÂÊ%d',wumalv);
+  Xa = sprintf('ä¿®æ”¹å:\nå‘é€ç å…ƒ%dï¼Œå‘é€æˆåŠŸç å…ƒ%d',allsymbol,symbol);
+  Xb = sprintf('è¯¯ç ç‡%d',wumalv);
   disp(Xa)
   disp(Xb)
- %save q_table_channel_1.mat q_value   %±£´æÉú³ÉµÄQ±í
+ %save q_table_channel_1.mat q_value   %ä¿å­˜ç”Ÿæˆçš„Qè¡¨
